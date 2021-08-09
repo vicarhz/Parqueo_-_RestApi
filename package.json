@@ -1,0 +1,14 @@
+{
+  "name": "parqueo_-_restapi",
+  "version": "1.0.0",
+  "description": "Rest-Api para el Laboratorio #1 de SOA",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Victor Araya Hernández",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
