@@ -3,14 +3,15 @@ const app = express()
 var cors = require('cors')
 const port = 3000
 
-//import { returSpace } from './functions.js';
-//import {returSpace} from './functions.js';
-//const { returSpace } = require("functions.js");
-
 app.use(cors())
 
 //var arrayParqueos = ["free", "in-use", "free"]
-var arrayParqueos = ["Parqueo 1", "Parqueo 2", "Parqueo 3", "Parqueo 4", "Parqueo 5", "Parqueo 6"]
+var arrayParqueos = [{name:"Parqueo 1", status:"free"},
+                     {name:"Parqueo 2", status:"in-use"},
+                     {name:"Parqueo 3", status:"in-use"},
+                     {name:"Parqueo 4", status:"free"},
+                     {name:"Parqueo 5", status:"in-use"}, 
+                     {name:"Parqueo 6", status:"free"}];
 
 app.get('/spaces', (req, res) => {  
     var jsonResponse = JSON.stringify(Object.assign({}, arrayParqueos))
@@ -22,6 +23,12 @@ app.get('/spaces_paginacion', (req, res) => {
   const page = parseInt(req.query.page);
   const limit = parseInt(req.query.limit);
   res.send(resultadosPaginados(page, limit));
+})
+
+//Con filtro
+app.get('/spaces_filtro', (req, res) => {  
+  const status = req.query.filtro.toString();  
+  res.send(resultadosFiltrados(status));
 })
 
 app.get('/spaces/:id', (req, res) => {    
@@ -76,17 +83,25 @@ function resultadosPaginados(page, limit)
     var skipIndex = (page - 1) * limit;
     const results = {};    
     let arrayResult = [];
-    try {
-      results.results = arrayParqueos;
-      let counter = 0;
-      while (counter < limit) {
-        arrayResult.push(arrayParqueos[skipIndex]);
-        skipIndex++;
-        counter++;        
-      }
-      return JSON.stringify(Object.assign({}, arrayResult));
-
-    } catch (e) {
-      res.status(405).json({ message: "Error Occured"});
+    let counter = 0;
+    while (counter < limit) {
+      arrayResult.push(arrayParqueos[skipIndex]);
+      skipIndex++;
+      counter++;        
     }
+      return arrayResult;   
+}
+
+function resultadosFiltrados(status)
+{
+  var newArray = [];  
+  for (let index = 0; index < arrayParqueos.length; index++) 
+  {    
+    if(arrayParqueos[index].status == status)
+    {
+      newArray.push(arrayParqueos[index]);    
+    }
+  }
+  //console.log(newArray);
+  return newArray;
 }
