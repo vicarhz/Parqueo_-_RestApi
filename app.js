@@ -9,11 +9,19 @@ const port = 3000
 
 app.use(cors())
 
-var arrayParqueos = ["free", "in-use", "free"]
+//var arrayParqueos = ["free", "in-use", "free"]
+var arrayParqueos = ["Parqueo 1", "Parqueo 2", "Parqueo 3", "Parqueo 4", "Parqueo 5", "Parqueo 6"]
 
 app.get('/spaces', (req, res) => {  
     var jsonResponse = JSON.stringify(Object.assign({}, arrayParqueos))
     res.send(jsonResponse);
+})
+
+//Con Paginacion
+app.get('/spaces_paginacion', (req, res) => {  
+  const page = parseInt(req.query.page);
+  const limit = parseInt(req.query.limit);
+  res.send(resultadosPaginados(page, limit));
 })
 
 app.get('/spaces/:id', (req, res) => {    
@@ -57,16 +65,28 @@ app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}\n`)
 })
 
-// Configurar cabeceras y cors
-/* app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Headers', 'Authorization, X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Request-Method');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
-  res.header('Allow', 'GET, POST, OPTIONS, PUT, DELETE');
-  next();
-});
- */
 // ========================================================================================================
 function returSpace(id){
   return "Hola id: " + id;
+}
+
+// Para la paginación
+function resultadosPaginados(page, limit)
+{
+    var skipIndex = (page - 1) * limit;
+    const results = {};    
+    let arrayResult = [];
+    try {
+      results.results = arrayParqueos;
+      let counter = 0;
+      while (counter < limit) {
+        arrayResult.push(arrayParqueos[skipIndex]);
+        skipIndex++;
+        counter++;        
+      }
+      return JSON.stringify(Object.assign({}, arrayResult));
+
+    } catch (e) {
+      res.status(405).json({ message: "Error Occured"});
+    }
 }
