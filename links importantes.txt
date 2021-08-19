@@ -1,0 +1,9 @@
+Para instalacion de OpenSSL
+https://www.hmlearning.com/2021/02/como-descargar-y-configurar-openssl-en-windows-10.html
+https://slproweb.com/products/Win32OpenSSL.html
+
+Creaccion Certificados:
+https://www.youtube.com/watch?v=USrMdBF0zcg
+
+Agregar certificado al navegador, a partir paso 6:
+https://www.it-swarm-es.com/es/node.js/cree-un-certificado-ssl-autofirmado-de-confianza-para-localhost-para-uso-con-expressnode/1043546429/
